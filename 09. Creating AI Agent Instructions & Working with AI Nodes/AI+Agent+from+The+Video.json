@@ -1,0 +1,341 @@
+{
+  "name": "My workflow 6",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c72c9670-39c8-496f-980c-7b6243f9b382",
+      "name": "When chat message received",
+      "webhookId": "f1724017-c52f-4776-a671-b848e445d3c1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=** Purpose **\n\nYou are a professional executive assistant. Your job is to complete the tasks you are requested to do from the user.\n\n** Capabilites **\n\n- always when it's required to perform some task that requires dates to use, you can use this time as the reference, what time it is: {{ $now }}\n- always use tool/tools to perform a task, if it's needed\n\n** Tools **\n\n- Send a Message in Gmail - use this tool to send emails\n- Create an event in Google Calendar - use this tool to schedule the meetings that user requests. \n- Get Many Messages in Gmail - use this tool to get previous message/messages from our gmail account\n- Get Lables from Gmail - get all labels from my gmail account. Make sure to record all the labels names properly so later you can use it for other steps\n- Add label to message in Gmail - use this tool to add label to a proper message in gmail. Make sure you are using a proper label name. Every time use the id of a label to match it, instead of the label name.32\n- Get row(s) in sheet in Google Sheets - use it to save email information to google sheets. whenever you use this took firstly, get emails and then use this tool to save information. Only save information such as email title, and email message.\n\n\n\n** Interation Style ** \n\n- when you send emails, keep professional and funny tone, in the responses\n\n** Notes **\n\n- every time make sure you used the tool to complete the task\n- make sure to use the proper label id\n- make sure you get the exact amount of emails as the user requests, not more, not less"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8cc3f7b8-9b33-43ac-832e-bc72e4788a48",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        208
+      ],
+      "id": "6700eae7-4d88-482d-9499-3a45fe3a6cf5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        1072,
+        208
+      ],
+      "id": "b7276169-4d70-420f-bf0b-f1848248874f",
+      "name": "Send a message in Gmail",
+      "webhookId": "10f20b56-eece-4b1b-b7f3-30e4df354112",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Ke2KF46ScJbh5ZWr",
+          "name": "krystianudemy"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "krystian7431@gmail.com",
+          "mode": "list",
+          "cachedResultName": "krystian7431@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        208
+      ],
+      "id": "e9b26b49-b741-40aa-9bb6-0b832b43e891",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "U5t7XHc06H8E39Bj",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "label"
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        896,
+        208
+      ],
+      "id": "cbaf3844-e481-4c7b-b770-194af4a5807b",
+      "name": "Get many labels in Gmail",
+      "webhookId": "f80e1352-8d04-44ca-b230-15e685f05358",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Ke2KF46ScJbh5ZWr",
+          "name": "krystianudemy"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        736,
+        208
+      ],
+      "id": "93abb013-0fda-4a5c-baed-f3c15f8b7c25",
+      "name": "Get many messages in Gmail",
+      "webhookId": "5d4707b0-ddbe-40e1-b820-63622ca31001",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Ke2KF46ScJbh5ZWr",
+          "name": "krystianudemy"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message_ID', ``, 'string') }}",
+        "labelIds": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Label_Names_or_IDs', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        576,
+        208
+      ],
+      "id": "846a5a84-6392-499d-96be-22c25abf51c2",
+      "name": "Add label to message in Gmail",
+      "webhookId": "4425e612-7553-4334-b59d-12fbcd4a5db7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Ke2KF46ScJbh5ZWr",
+          "name": "krystianudemy"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Cn4aRrx5zhHkab8rBqa2frBXz-ABSjqdMYFZa2gHQgU",
+          "mode": "list",
+          "cachedResultName": "Email Information",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Cn4aRrx5zhHkab8rBqa2frBXz-ABSjqdMYFZa2gHQgU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Cn4aRrx5zhHkab8rBqa2frBXz-ABSjqdMYFZa2gHQgU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email Title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Email_Title', ``, 'string') }}",
+            "Email Message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Email_Message', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Email Title",
+              "displayName": "Email Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email Message",
+              "displayName": "Email Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        400,
+        208
+      ],
+      "id": "6346df9a-82a0-4db6-ae0e-ddc423b57a1e",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "VjB52JghQlX5ZmcR",
+          "name": "Google Sheets n8n"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many labels in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add label to message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "468da759-2027-40ee-a8f8-de37013f6137",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8ec8bfddbd59fdde442d5ed0bec9c8e336f78ad4e7b2c1393fe111ac5a29897c"
+  },
+  "id": "tsdf6Ds86ikUWUVp",
+  "tags": []
+}

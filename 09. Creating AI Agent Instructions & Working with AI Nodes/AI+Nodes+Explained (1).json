@@ -1,0 +1,625 @@
+{
+  "name": "AI Nodes Explained",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# 📌 AI Nodes Overview & When to Use Them\n\n## **1. AI Agent**  \nUse when AI needs to **plan and perform multiple steps**, often with tools.  \n*Example: Find the latest AI news, summarize it in Google Docs, and send by email.*\n\n\n## **2. Basic LLM Chain**  \nUse for **simple prompt-and-response** tasks with no advanced logic.  \n*Example: Translate a sentence or generate a headline.*\n\n\n## **3. Information Extractor**  \nUse to **extract structured data** from freeform text.  \n*Example: Get name, address, and product from an email.*\n\n\n## **4. Question and Answer Chain**  \nUse when you want AI to **answer based on documents**.  \n*Example: Upload a PDF and ask “What’s the revenue in Q2?”*\n\n\n## **5. Sentiment Analysis**  \nUse to **detect tone** (positive, negative, neutral) in text.  \n*Example: Analyze if customer feedback is positive or negative.*\n\n\n## **6. Summarization Chain**  \nUse to **condense long content** into a short summary.  \n*Example: Summarize a meeting or an article.*\n\n\n## **7. Text Classifier**  \nUse to **sort text into categories**.  \n*Example: Classify a message as Bug, Feature Request, or Question.*\n\n\n## **8. Evaluation**  \nUse to **check quality or correctness** of AI outputs.  \n*Example: Evaluate if a response fits the expected answer or style.*\n\n\n\n# 🧠 Quick Rule of Thumb\n\n- **Agent** → for doing multi-step actions  \n- **LLM Chain** → for basic AI prompts  \n- **Extractor / Classifier / Sentiment** → for structuring or labeling text  \n- **Summarizer** → for condensing content  \n- **Q&A Chain** → for document-based answers  \n- **Evaluation** → for measuring output quality\n",
+        "height": 1344,
+        "width": 576
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        944,
+        -384
+      ],
+      "id": "ac972660-2d68-4435-98d5-93e8da88c4b7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Content }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "summarize content"
+            }
+          ]
+        },
+        "batching": {
+          "batchSize": 10,
+          "delayBetweenBatches": 3000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -240,
+        -384
+      ],
+      "id": "4d310378-e7be-45bb-8bb3-b14b3ffca49a",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "text": "Hi, my name is Sarah Johnson. I live in New York, and I recently purchased the Zapier Masterclass Course on February 12, 2025. I paid $79 using my Visa card ending in 4567. Please send the invoice to my email: sarah.johnson@example.com\n. My phone number is +1-202-555-0147. Thank you!",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "name",
+              "description": "name of the person"
+            },
+            {
+              "name": "email",
+              "description": "sa"
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "You are an expert extraction algorithm.\nOnly extract relevant information from the text.\nIf you do not know the value of an attribute asked to extract, you may omit the attribute's value."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        384,
+        -384
+      ],
+      "id": "2555cd1a-a0c2-4083-864a-67d632440dca",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -256,
+        -224
+      ],
+      "id": "0c72b027-79f6-414d-81cd-56e145dfc759",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        368,
+        -224
+      ],
+      "id": "a9af161f-8837-4f28-8196-ec559f4d0e91",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": ".",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainRetrievalQa",
+      "typeVersion": 1.6,
+      "position": [
+        -864,
+        800
+      ],
+      "id": "b1621637-d605-4edd-b4f0-9f9d316aa6af",
+      "name": "Question and Answer Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -896,
+        960
+      ],
+      "id": "9bbbe441-744f-4cca-940d-ddd019767fe8",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.chatInput }}",
+        "options": {
+          "categories": "Positive, Neutral, Negative",
+          "includeDetailedResults": true,
+          "enableAutoFixing": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.sentimentAnalysis",
+      "typeVersion": 1.1,
+      "position": [
+        -864,
+        192
+      ],
+      "id": "79b3e5ad-1ca6-4294-83c7-980ae8f4d86e",
+      "name": "Sentiment Analysis"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -896,
+        368
+      ],
+      "id": "dd758c62-1808-431c-bc9c-4ffa52f3683e",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.chatInput }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "vegeteable",
+              "description": "this is for a vegeteable"
+            },
+            {
+              "category": "fruit",
+              "description": "this is for a fruit"
+            },
+            {
+              "category": "meat",
+              "description": "this is for a meat"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -240,
+        192
+      ],
+      "id": "c1bb45e7-d52c-446f-8fa1-972724f7eec0",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -272,
+        352
+      ],
+      "id": "7b3e23ec-01f9-4545-b545-219afc04eef4",
+      "name": "OpenAI Chat Model5",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 🧠 Chat Roles: System, User & AI\n\nUnderstanding when and how to use each message type inside the **Basic LLM Chain**:\n\n\n\n## **🛠️ System**  \nUsed to **set the behavior, tone, or rules** for the AI. This runs *before* any user input is processed.  \nUse it to define how the AI should respond, what it should prioritize, or how it should behave.  \n*Example:* “You are a helpful travel assistant who answers in short, friendly sentences.”\n\n✅ Use when:  \n- You want to control the AI’s personality or format  \n- You need specific response rules (e.g. JSON output, no small talk)\n\n\n\n## **🧑 User**  \nRepresents the **actual message or input from the user** (usually dynamic). This is what the AI is responding to.  \n*Example:* “Can you find me the cheapest flight to Madrid next week?”\n\n✅ Use when:  \n- You’re passing dynamic input from a chat interface or form  \n- You want to simulate user interaction inside a static workflow\n\n\n\n## **🤖 AI**  \nRepresents **what the AI previously said** (optional). This can be useful when building multi-turn conversations or testing.  \n*Example:* “Sure! Do you have a preferred departure city?”\n\n✅ Use when:  \n- You want to provide context from a previous AI message  \n- You're chaining messages or testing dialogue memory manually\n\n",
+        "height": 944,
+        "width": 576,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        -384
+      ],
+      "id": "b4860567-bea2-4376-86eb-1c0b5ca858c7",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -896,
+        -192
+      ],
+      "id": "916932d1-9f0b-407a-9867-20b244ccc16f",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=In the response return only this data: onion+ pepper+ carrot",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -864,
+        -384
+      ],
+      "id": "fe2a9086-316c-40ef-abac-09293d27fbd0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "chunkingMode": "advanced",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+      "typeVersion": 2.1,
+      "position": [
+        464,
+        192
+      ],
+      "id": "3fa48e24-6efe-4c0b-965a-cce8c3420518",
+      "name": "Summarization Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        352
+      ],
+      "id": "b180bbbb-fc37-4aba-a63d-3e6ea9e8c6b6",
+      "name": "OpenAI Chat Model6",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "__CUSTOM_API_CALL__"
+      },
+      "type": "n8n-nodes-base.evaluation",
+      "typeVersion": 4.7,
+      "position": [
+        -240,
+        784
+      ],
+      "id": "c39768b6-8f63-4bb5-bb27-b0b6b2dbc1cb",
+      "name": "Evaluation"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1104,
+        -384
+      ],
+      "id": "ebff2bb1-3de9-494d-b5a5-1198fce9c54c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.retrieverContextualCompression",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        1040
+      ],
+      "id": "4301c9e3-44e0-49a4-a503-539b5ab05e4e",
+      "name": "Contextual Compression Retriever"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -848,
+        1248
+      ],
+      "id": "19976230-1d4c-4604-82b8-bd9e885bf615",
+      "name": "OpenAI Chat Model7",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.retrieverVectorStore",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        1248
+      ],
+      "id": "d0a49419-3fd5-46d2-a8a4-ff0403417f57",
+      "name": "Vector Store Retriever"
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -768,
+        1424
+      ],
+      "id": "a280adca-d30b-4197-9c04-17c87a477db4",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "fc5Dw88UktfrjqeH",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -816,
+        1600
+      ],
+      "id": "766ce145-59f7-49cc-95b2-0528f5b5c667",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "5GBaPClALhBlVGuT",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sentiment Analysis",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarization Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contextual Compression Retriever": {
+      "ai_retriever": [
+        [
+          {
+            "node": "Question and Answer Chain",
+            "type": "ai_retriever",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model7": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Contextual Compression Retriever",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Retriever": {
+      "ai_retriever": [
+        [
+          {
+            "node": "Contextual Compression Retriever",
+            "type": "ai_retriever",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Retriever",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2787ba6c-3663-4d53-b972-eedbcd655d04",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8ec8bfddbd59fdde442d5ed0bec9c8e336f78ad4e7b2c1393fe111ac5a29897c"
+  },
+  "id": "yPHfYlwLXPQpWOkx",
+  "tags": []
+}
